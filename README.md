@@ -49,3 +49,8 @@ Tener una función que se ejecute cuando el socket reciba un `reset` que borre l
 #### **Cliente**
 
 Crear un botón en el HTML que al hacer click envíe `reset` al socket. Tener una función que actualice los datos cuando reciba `callbackReset`.
+
+## Heroku
+
+* Link app: https://master-click-nicos.herokuapp.com/
+* Link repositorio GitHub: https://github.com/NicosFabro/master-click

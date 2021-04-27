@@ -42,16 +42,16 @@ socket.on("numero de usuarios", (data) => {
 });
 socket.on("new click", (data) => {
     numClicksText.innerText = data.numClicks;
-    clicksUserTxt.innerText = data.clicksPerUser[socket.id];
+    clicksUserTxt.innerText = data.clicksPerUser[socket.id] || 0;
     average.innerText = data.numClicks / data.usersConnected;
     positionAvg.innerText = data.clicksPerUser[socket.id] < (data.numClicks / data.usersConnected) ? "debajo" : "encima"
 });
 
 socket.on("callbackReset", (data) => {
     numClicksText.innerText = data.numClicks;
-    clicksUserTxt.innerText = data.clicksPerUser[socket.id];
+    clicksUserTxt.innerText = data.clicksPerUser[socket.id] || 0;
     average.innerText = 0;
-    positionAvg.innerText = 0;
+    positionAvg.innerText = "debajo";
 });
 
 sendButton.onclick = () => {
