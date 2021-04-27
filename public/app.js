@@ -1,5 +1,5 @@
-let text = document.querySelector("#chat");
 let sendButton = document.querySelector("#sendButton");
+let resetButton = document.querySelector("#resetButton");
 let textMessage = document.querySelector("#textMessage");
 
 let usersConnected = document.getElementById("counter");
@@ -9,13 +9,6 @@ const urlParams = new URLSearchParams(window.location.search);
 
 const socket = io();
 
-socket.on("message", (data) => {
-    const d = document.createElement("div");
-    const t = document.createTextNode(data.username + ": " + data.message);
-    d.appendChild(t);
-    text.appendChild(d);
-});
-
 socket.on("usuario conectado", (data) => {
     const d = document.createElement("div");
     d.classList.add("joined");
@@ -23,7 +16,6 @@ socket.on("usuario conectado", (data) => {
         "El usuario " + data.username + " se ha conectado"
     );
     d.appendChild(t);
-    text.appendChild(d);
 
     usersConnected.innerText = data.usersConnected;
 });
@@ -35,7 +27,6 @@ socket.on("usuario desconectado", (data) => {
         "El usuario " + data.username + " se ha desconectado!"
     );
     d.appendChild(t);
-    text.appendChild(d);
 
     usersConnected.innerText = data.usersConnected;
 });
@@ -47,11 +38,26 @@ socket.on("connect", () => {
 socket.on("numero de usuarios", (data) => {
     usersConnected.innerText = data.usersConnected;
     numClicksText.innerHTML = data.numClicks;
+    average.innerText = data.numClicks / data.usersConnected;
 });
 socket.on("new click", (data) => {
     numClicksText.innerText = data.numClicks;
+    clicksUserTxt.innerText = data.clicksPerUser[socket.id];
+    average.innerText = data.numClicks / data.usersConnected;
+    positionAvg.innerText = data.clicksPerUser[socket.id] < (data.numClicks / data.usersConnected) ? "debajo" : "encima"
+});
+
+socket.on("callbackReset", (data) => {
+    numClicksText.innerText = data.numClicks;
+    clicksUserTxt.innerText = data.clicksPerUser[socket.id];
+    average.innerText = 0;
+    positionAvg.innerText = 0;
 });
 
 sendButton.onclick = () => {
     socket.emit("click", "");
+};
+
+resetButton.onclick = () => {
+    socket.emit("reset", "");
 };
